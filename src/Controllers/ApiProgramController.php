@@ -41,6 +41,7 @@ class ApiProgramController extends Controller {
         }
 
         $name = trim((string)($input['name'] ?? '')) ?: ('Store ' . $externalRef);
+        $description = trim((string)($input['description'] ?? '')) ?: ('Affiliate program for ' . $name);
         $commissionType = ($input['commission_type'] ?? 'percentage') === 'fixed' ? 'fixed' : 'percentage';
         $commissionValue = (float)($input['commission_value'] ?? 10);
         $cookieDays = (int)($input['cookie_days'] ?? 30);
@@ -49,29 +50,55 @@ class ApiProgramController extends Controller {
         $landingPage = (string)($input['landing_page'] ?? '');
 
         try {
-            // Idempotency: return existing program for this external_ref
+            // Idempotent UPSERT keyed by external_ref (one program per store).
             $existing = Database::query(
-                "SELECT id, name, status FROM programs WHERE external_ref = ? LIMIT 1",
+                "SELECT id FROM programs WHERE external_ref = ? LIMIT 1",
                 [$externalRef]
             )->fetch();
 
             if ($existing) {
+                $programId = (int)$existing['id'];
+                $fields = [
+                    'name' => $name,
+                    'description' => $description,
+                    'commission_type' => $commissionType,
+                    'commission_value' => $commissionValue,
+                    'cookie_days' => $cookieDays,
+                    'is_recurring' => $isRecurring,
+                    'reward_days' => $rewardDays,
+                    'status' => 'active',
+                ];
+                // Only overwrite landing_page when a non-empty one is supplied,
+                // so an auto-provision with no URL doesn't wipe an admin-set URL.
+                if ($landingPage !== '') {
+                    $fields['landing_page'] = $landingPage;
+                }
+                Database::update('programs', $fields, 'id = ?', [$programId]);
+
+                $program = Database::query("SELECT * FROM programs WHERE id = ?", [$programId])->fetch();
+                try {
+                    ProgramScriptGenerator::generate($program, $_SERVER['HTTP_HOST'] ?? 'partners.9forlives.com');
+                } catch (\Throwable $e) {
+                    error_log('ApiProgramController: script generation failed: ' . $e->getMessage());
+                }
+
                 $this->json([
-                    'program_id' => (int)$existing['id'],
-                    'name' => $existing['name'],
-                    'status' => $existing['status'],
+                    'program_id' => $programId,
+                    'name' => $name,
+                    'status' => 'active',
                     'created' => false,
+                    'updated' => true,
                 ]);
                 return;
             }
 
             $programId = Database::transaction(function () use (
-                $externalRef, $name, $commissionType, $commissionValue,
+                $externalRef, $name, $description, $commissionType, $commissionValue,
                 $cookieDays, $rewardDays, $isRecurring, $landingPage
             ) {
                 $id = Database::insert('programs', [
                     'name' => $name,
-                    'description' => 'Affiliate program for ' . $name,
+                    'description' => $description,
                     'commission_type' => $commissionType,
                     'commission_value' => $commissionValue,
                     'cookie_days' => $cookieDays,

@@ -132,10 +132,12 @@ CREATE TABLE `programs` (
   `reward_days` int unsigned DEFAULT '0',
   `landing_page` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` enum('active','inactive') COLLATE utf8mb4_unicode_ci DEFAULT 'active',
+  `external_ref` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `is_private` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_external_ref` (`external_ref`),
   KEY `idx_is_private` (`is_private`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

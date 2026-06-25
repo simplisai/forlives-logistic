@@ -39,6 +39,11 @@ class Controller {
                 $settings[$row['name']] = $row['value'];
             }
 
+            // Brand logo is managed in-repo (public/assets/images/forlives-logo.png)
+            // as the single source of truth: always present, identical on every screen,
+            // and survives redeploys. Ignore any uploaded custom_logo (ephemeral here).
+            unset($settings['custom_logo']);
+
             return $settings;
         } catch (\Exception $e) {
             // Return empty array if database is not available

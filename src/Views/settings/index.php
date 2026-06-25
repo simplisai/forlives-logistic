@@ -102,18 +102,13 @@
                                     <p class="mt-2 text-sm text-gray-500">This will replace "Forlives Logistic" throughout the application.</p>
                                 </div>
 
-                                <!-- Custom Logo Upload -->
+                                <!-- Brand Logo (managed in app files) -->
                                 <div class="mb-4">
-                                    <label for="custom_logo" class="block text-sm font-medium text-gray-700">Custom Logo</label>
-                                    <?php if (!empty($settings['custom_logo'])): ?>
-                                    <div class="mt-2 mb-3">
-                                        <img src="/assets/uploads/<?= htmlspecialchars($settings['custom_logo']) ?>" onerror="this.onerror=null;this.src='/assets/images/forlives-logo.png'" alt="Current Logo" class="h-12 max-w-48 object-contain">
-                                        <p class="text-sm text-gray-500 mt-1">Current logo</p>
+                                    <label class="block text-sm font-medium text-gray-700">Brand Logo</label>
+                                    <div class="mt-2 mb-2">
+                                        <img src="/assets/images/forlives-logo.png" alt="Brand Logo" class="h-12 max-w-48 object-contain">
                                     </div>
-                                    <?php endif; ?>
-                                    <input type="file" name="custom_logo" id="custom_logo" accept="image/*"
-                                           class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
-                                    <p class="mt-2 text-sm text-gray-500">Upload a PNG, JPG, or SVG file. Recommended size: 200x50px or similar aspect ratio.</p>
+                                    <p class="mt-1 text-sm text-gray-500">The logo is set in the application files and applied everywhere automatically.</p>
                                 </div>
 
                                 <div class="mt-6 flex space-x-3">

@@ -1,4 +1,8 @@
 RewriteEngine On
+
+# Friendly URL: /playbook -> static partner playbook page
+RewriteRule ^playbook/?$ partner-playbook.html [L]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [QSA,L]

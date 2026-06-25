@@ -137,8 +137,8 @@
                                         <p class="text-lg font-semibold text-gray-900 mt-1"><?= $program['cookie_days'] ?> days</p>
                                     </div>
                                     <div class="text-center p-3 bg-gray-50 rounded-lg">
-                                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Sub IDs</p>
-                                        <p class="text-lg font-semibold text-gray-900 mt-1">sid, sid2, sid3</p>
+                                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Approval</p>
+                                        <p class="text-lg font-semibold text-gray-900 mt-1"><?= (int)($program['reward_days'] ?? 0) > 0 ? (int)$program['reward_days'] . ' days' : 'Instant' ?></p>
                                     </div>
                                 </div>
 

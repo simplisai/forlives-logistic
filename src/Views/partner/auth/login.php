@@ -1,7 +1,7 @@
 <div class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
         <?php if (!empty($settings['custom_logo'])): ?>
-            <img src="/assets/uploads/<?= htmlspecialchars($settings['custom_logo']) ?>" alt="<?= htmlspecialchars($settings['custom_app_name'] ?? 'App') ?>" class="h-12 mx-auto max-w-64 object-contain" />
+            <img src="/assets/uploads/<?= htmlspecialchars($settings['custom_logo']) ?>" onerror="this.onerror=null;this.src='/assets/images/forlives-logo.png'" alt="<?= htmlspecialchars($settings['custom_app_name'] ?? 'App') ?>" class="h-12 mx-auto max-w-64 object-contain" />
         <?php else: ?>
             <img src="/assets/images/forlives-logo.png" alt="Forlives Logistic" class="h-12 mx-auto max-w-xs object-contain" />
         <?php endif; ?>

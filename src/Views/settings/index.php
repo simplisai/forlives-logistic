@@ -107,7 +107,7 @@
                                     <label for="custom_logo" class="block text-sm font-medium text-gray-700">Custom Logo</label>
                                     <?php if (!empty($settings['custom_logo'])): ?>
                                     <div class="mt-2 mb-3">
-                                        <img src="/assets/uploads/<?= htmlspecialchars($settings['custom_logo']) ?>" alt="Current Logo" class="h-12 max-w-48 object-contain">
+                                        <img src="/assets/uploads/<?= htmlspecialchars($settings['custom_logo']) ?>" onerror="this.onerror=null;this.src='/assets/images/forlives-logo.png'" alt="Current Logo" class="h-12 max-w-48 object-contain">
                                         <p class="text-sm text-gray-500 mt-1">Current logo</p>
                                     </div>
                                     <?php endif; ?>

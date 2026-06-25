@@ -87,6 +87,7 @@
   .browser .dots i{width:11px;height:11px;border-radius:50%;background:#e4e1d6;display:block}
   .browser .url{flex:1;font-family:"DM Mono",monospace;font-size:12px;color:var(--muted);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:6px 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .browser .body{padding:22px}
+  .browser img.shot{display:block;width:100%;height:auto}
   .field{margin-bottom:13px}
   .field label{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
   .field .inp{height:38px;border:1px solid var(--line);border-radius:9px;background:var(--paper);display:flex;align-items:center;padding:0 12px;font-size:14px;color:#444}
@@ -225,14 +226,7 @@
     </div>
     <div class="browser">
       <div class="bar"><div class="dots"><i></i><i></i><i></i></div><div class="url">partners.9forlives.com/register</div></div>
-      <div class="body">
-        <div class="field"><label data-i18n="m_company">Company</label><div class="inp">Your Company Ltd.</div></div>
-        <div class="field"><label data-i18n="m_contact">Contact name</label><div class="inp">Your Name</div></div>
-        <div class="field"><label>Email</label><div class="inp">you@email.com</div></div>
-        <div class="field"><label data-i18n="m_password">Password</label><div class="inp">••••••••••</div></div>
-        <div class="mock-btn" style="margin-top:6px">Create account</div>
-        <p style="font-size:12px;color:var(--muted);margin:12px 0 0;text-align:center"><span data-i18n="m_status">Initial status:</span> <span class="pill amber">pending approval</span></p>
-      </div>
+      <img class="shot" src="/assets/playbook/register.png" alt="Partner registration page" loading="lazy">
     </div>
   </div></div>
 </section>
@@ -252,14 +246,7 @@
     </div>
     <div class="browser">
       <div class="bar"><div class="dots"><i></i><i></i><i></i></div><div class="url">partners.9forlives.com/programs</div></div>
-      <div class="body">
-        <div class="prog-card">
-          <div class="top"><div><h5>MegaVoice Affiliate Program</h5><div class="sub" data-i18n="m_megasub">Solar audio players · worldwide shipping</div></div><span class="pill blue">Available</span></div>
-          <div class="rate"><span style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em" data-i18n="m_commission">Commission</span><b>10% <span style="font-size:12px;color:var(--muted);font-family:'DM Sans'" data-i18n="m_persale">per sale</span></b></div>
-          <div style="display:flex"><div style="flex:1;text-align:center;padding:11px;border-right:1px solid var(--line)"><div style="font-size:10px;color:var(--muted);text-transform:uppercase">Cookie</div><div style="font-weight:600">30 days</div></div><div style="flex:1;text-align:center;padding:11px"><div style="font-size:10px;color:var(--muted);text-transform:uppercase">Approval</div><div style="font-weight:600">Instant</div></div></div>
-          <div class="foot"><div class="mock-btn">＋ Join Program</div></div>
-        </div>
-      </div>
+      <img class="shot" src="/assets/playbook/programs.png" alt="Programs page with joined affiliate programs" loading="lazy">
     </div>
   </div></div>
 </section>
@@ -279,14 +266,7 @@
     </div>
     <div class="browser">
       <div class="bar"><div class="dots"><i></i><i></i><i></i></div><div class="url">partners.9forlives.com/programs</div></div>
-      <div class="body">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:13px"><span class="pill green">✓ Joined — MegaVoice</span><span class="mono" style="font-size:12px;color:var(--muted)">code: cae4b2cb515c26c1</span></div>
-        <div class="linkbox">
-          <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--lime-deep);font-weight:600;margin-bottom:9px">🔗 Your Tracking Link</div>
-          <div class="row"><code id="trk">https://megavoice.store?via=cae4b2cb515c26c1</code><button class="copybtn" id="cbtn" onclick="copyTrk()" data-i18n="m_copy">Copy</button></div>
-        </div>
-        <p style="font-size:12.5px;color:var(--muted);margin:14px 0 0" data-i18n="m_linknote">Share this link anywhere. Every click is stored for 30 days.</p>
-      </div>
+      <img class="shot" src="/assets/playbook/programs.png" alt="Your Tracking Link on each program card" loading="lazy">
     </div>
   </div></div>
 </section>
@@ -306,18 +286,7 @@
     </div>
     <div class="browser">
       <div class="bar"><div class="dots"><i></i><i></i><i></i></div><div class="url">checkout.stripe.com · MegaVoice</div></div>
-      <div class="body">
-        <div class="checkout">
-          <div class="ck-head"><b style="font-family:'Fraunces',serif">MegaVoice</b><span class="pill gray">Stripe</span></div>
-          <div class="ck-body">
-            <div class="ck-line"><span>Envoy 2 S — Solar Audio Player</span><span>$35.00</span></div>
-            <div class="ck-line"><span data-i18n="m_shiptax">Shipping + tax</span><span>$13.14</span></div>
-            <div class="ck-line total"><span data-i18n="m_total">Total</span><span>$48.14</span></div>
-            <div class="ck-partner"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="#8BCB2E"/><path d="M6 10.5l2.5 2.5L14 7.5" stroke="#11110D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> <b>Partner: Your Name</b></div>
-            <div class="ck-pay" data-i18n="m_pay">Pay $48.14</div>
-          </div>
-        </div>
-      </div>
+      <img class="shot" src="/assets/playbook/checkout.png" alt="Stripe checkout showing Partner: Your Name" loading="lazy">
     </div>
   </div></div>
 </section>
@@ -336,22 +305,8 @@
       </ul>
     </div>
     <div class="browser">
-      <div class="bar"><div class="dots"><i></i><i></i><i></i></div><div class="url">partners.9forlives.com/earnings</div></div>
-      <div class="body">
-        <div class="stat-grid">
-          <div class="stat"><div class="n">24</div><div class="l" data-i18n="m_sales">Sales</div></div>
-          <div class="stat"><div class="n">$1,156</div><div class="l" data-i18n="m_sold">Sold</div></div>
-          <div class="stat"><div class="n" style="color:var(--lime-deep)">$115.60</div><div class="l" data-i18n="m_commission2">Commission</div></div>
-        </div>
-        <table class="earn">
-          <thead><tr><th data-i18n="m_store">Store</th><th data-i18n="m_sale">Sale</th><th data-i18n="m_commission3">Commission</th><th>Status</th></tr></thead>
-          <tbody>
-            <tr><td>MegaVoice</td><td>$48.14</td><td>$4.81</td><td><span class="pill green">payable</span></td></tr>
-            <tr><td>Solar Grove</td><td>$70.00</td><td>$7.00</td><td><span class="pill amber">pending</span></td></tr>
-            <tr><td>MegaVoice</td><td>$30.00</td><td>$3.00</td><td><span class="pill blue">paid</span></td></tr>
-          </tbody>
-        </table>
-      </div>
+      <div class="bar"><div class="dots"><i></i><i></i><i></i></div><div class="url">partners.9forlives.com/dashboard</div></div>
+      <img class="shot" src="/assets/playbook/dashboard.png" alt="Partner dashboard with earnings summary" loading="lazy">
     </div>
   </div></div>
 </section>

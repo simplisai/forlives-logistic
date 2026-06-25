@@ -106,7 +106,7 @@
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-gray-700">Brand Logo</label>
                                     <div class="mt-2 mb-2">
-                                        <img src="/assets/images/forlives-logo.png" alt="Brand Logo" class="h-12 max-w-48 object-contain">
+                                        <img src="/assets/images/forlives-logo.svg" alt="Brand Logo" class="h-12 max-w-48 object-contain">
                                     </div>
                                     <p class="mt-1 text-sm text-gray-500">The logo is set in the application files and applied everywhere automatically.</p>
                                 </div>

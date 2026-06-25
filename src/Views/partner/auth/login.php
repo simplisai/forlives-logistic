@@ -3,7 +3,7 @@
         <?php if (!empty($settings['custom_logo'])): ?>
             <img src="/assets/uploads/<?= htmlspecialchars($settings['custom_logo']) ?>" alt="<?= htmlspecialchars($settings['custom_app_name'] ?? 'App') ?>" class="h-12 mx-auto max-w-64 object-contain" />
         <?php else: ?>
-            <img src="/assets/images/forlives-logo.png" alt="Forlives Logistic" class="h-12 mx-auto" />
+            <img src="/assets/images/forlives-logo.png" alt="Forlives Logistic" class="h-12 mx-auto max-w-xs object-contain" />
         <?php endif; ?>
         <h2 class="mt-2 text-center text-gray-400">
             Partner login

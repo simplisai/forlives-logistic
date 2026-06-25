@@ -4,7 +4,7 @@
             <?php if (!empty($settings['custom_logo'])): ?>
                 <img src="/assets/uploads/<?= htmlspecialchars($settings['custom_logo']) ?>" alt="<?= htmlspecialchars($settings['custom_app_name'] ?? 'App') ?>" class="h-12 mx-auto max-w-64 object-contain">
             <?php else: ?>
-                <img src="/assets/images/forlives-logo.png" class="h-12 mx-auto">
+                <img src="/assets/images/forlives-logo.png" class="h-12 mx-auto max-w-xs object-contain">
             <?php endif; ?>
         </h2>
     </div>

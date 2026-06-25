@@ -6,7 +6,7 @@
                     alt="<?= htmlspecialchars($settings['custom_app_name'] ?? 'App') ?>"
                     class="h-12 mx-auto max-w-64 object-contain">
             <?php else: ?>
-                <img src="/assets/images/forlives-logo.png" class="h-12 mx-auto">
+                <img src="/assets/images/forlives-logo.png" class="h-12 mx-auto max-w-xs object-contain">
             <?php endif; ?>
         </h2>
         <h3 class="mt-6 text-center text-xl font-semibold leading-9 tracking-tight text-gray-900">

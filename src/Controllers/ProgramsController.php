@@ -26,7 +26,7 @@ class ProgramsController extends Controller {
 
         $settings = $this->getSettings();
         $this->view('programs/index', [
-            'title' => 'Programs - ' . ($settings['custom_app_name'] ?? 'Numok'),
+            'title' => 'Programs - ' . ($settings['custom_app_name'] ?? 'Forlives Logistic'),
             'programs' => $programs
         ]);
     }
@@ -34,7 +34,7 @@ class ProgramsController extends Controller {
     public function create(): void {
         $settings = $this->getSettings();
         $this->view('programs/create', [
-            'title' => 'Create Program - ' . ($settings['custom_app_name'] ?? 'Numok')
+            'title' => 'Create Program - ' . ($settings['custom_app_name'] ?? 'Forlives Logistic')
         ]);
     }
 
@@ -97,7 +97,7 @@ class ProgramsController extends Controller {
 
         $settings = $this->getSettings();
         $this->view('programs/edit', [
-            'title' => 'Edit Program - ' . ($settings['custom_app_name'] ?? 'Numok'),
+            'title' => 'Edit Program - ' . ($settings['custom_app_name'] ?? 'Forlives Logistic'),
             'program' => $program
         ]);
     }
@@ -119,7 +119,7 @@ class ProgramsController extends Controller {
         $settings = $this->getSettings();
 
         $this->view('programs/integration', [
-            'title' => 'Integration Guide - ' . ($settings['custom_app_name'] ?? 'Numok'),
+            'title' => 'Integration Guide - ' . ($settings['custom_app_name'] ?? 'Forlives Logistic'),
             'program' => $program,
             'settings' => $appUrlSetting
         ]);

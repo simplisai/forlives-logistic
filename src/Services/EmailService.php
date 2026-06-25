@@ -21,7 +21,7 @@ class EmailService
         }
         $this->resend = Resend::client($apiKey);
         $this->fromEmail = $config['email']['from_address'] ?? getenv('MAIL_FROM_ADDRESS') ?: 'onboarding@resend.dev';
-        $this->appName = $config['app']['name'] ?? getenv('APP_NAME') ?: 'Numok';
+        $this->appName = $config['app']['name'] ?? getenv('APP_NAME') ?: 'Forlives Logistic';
     }
 
     public function sendWelcomeEmail(string $to, string $name): void

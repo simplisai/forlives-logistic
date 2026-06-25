@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($title ?? 'Partner Portal - ' . ($settings['custom_app_name'] ?? 'Numok')) ?></title>
+    <title><?= htmlspecialchars($title ?? 'Partner Portal - ' . ($settings['custom_app_name'] ?? 'Forlives Logistic')) ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/alpinejs" defer></script>
 
@@ -27,7 +27,7 @@
                                 <?php if (!empty($settings['custom_logo'])): ?>
                                     <img src="/assets/uploads/<?= htmlspecialchars($settings['custom_logo']) ?>" alt="<?= htmlspecialchars($settings['custom_app_name'] ?? 'App') ?>" class="h-8 max-w-48 object-contain" />
                                 <?php else: ?>
-                                    <img src="/assets/images/numok-logo.png" alt="Numok" class="h-8" />
+                                    <img src="/assets/images/numok-logo.png" alt="Forlives Logistic" class="h-8" />
                                 <?php endif; ?>
                             </a>
                         </div>

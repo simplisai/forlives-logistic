@@ -31,7 +31,7 @@ class DashboardController extends Controller {
 
         $settings = $this->getSettings();
         $this->view('dashboard/index', [
-            'title' => 'Dashboard - ' . ($settings['custom_app_name'] ?? 'Numok'),
+            'title' => 'Dashboard - ' . ($settings['custom_app_name'] ?? 'Forlives Logistic'),
             'user_name' => $_SESSION['user_name'],
             'stats' => $stats,
             'recent_conversions' => $conversions,

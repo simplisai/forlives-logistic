@@ -19,7 +19,7 @@ class PartnerAuthController extends PartnerBaseController
 
         $settings = $this->getSettings();
         $this->view('partner/auth/login', [
-            'title' => 'Partner Login - ' . ($settings['custom_app_name'] ?? 'Numok'),
+            'title' => 'Partner Login - ' . ($settings['custom_app_name'] ?? 'Forlives Logistic'),
             'error' => $error
         ]);
     }
@@ -85,7 +85,7 @@ class PartnerAuthController extends PartnerBaseController
     {
         $settings = $this->getSettings();
         $this->view('partner/auth/register', [
-            'title' => 'Register - ' . ($settings['custom_app_name'] ?? 'Numok')
+            'title' => 'Register - ' . ($settings['custom_app_name'] ?? 'Forlives Logistic')
         ]);
     }
 

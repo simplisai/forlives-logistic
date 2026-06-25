@@ -20,7 +20,7 @@ $config['email'] = [
 
 // Application configuration
 $config['app'] = [
-    'name' => 'Numok',
+    'name' => 'Forlives Logistic',
     'url' => getenv('APP_URL') ?: 'http://localhost',
     'debug' => getenv('APP_DEBUG') ?: true
 ];

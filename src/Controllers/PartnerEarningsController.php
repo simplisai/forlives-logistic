@@ -41,7 +41,7 @@ class PartnerEarningsController extends PartnerBaseController {
 
         $settings = $this->getSettings();
         $this->view('partner/earnings/index', [
-            'title' => 'Earnings - ' . ($settings['custom_app_name'] ?? 'Numok'),
+            'title' => 'Earnings - ' . ($settings['custom_app_name'] ?? 'Forlives Logistic'),
             'summary' => $summary,
             'conversions' => $conversions,
             'programs' => $programs,

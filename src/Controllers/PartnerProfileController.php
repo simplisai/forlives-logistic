@@ -20,7 +20,7 @@ class PartnerProfileController extends PartnerBaseController {
 
         $settings = $this->getSettings();
         $this->view('partner/settings/index', [
-            'title' => 'Account Settings - ' . ($settings['custom_app_name'] ?? 'Numok'),
+            'title' => 'Account Settings - ' . ($settings['custom_app_name'] ?? 'Forlives Logistic'),
             'partner' => $partner
         ]);
     }

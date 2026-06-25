@@ -38,7 +38,7 @@
                     }
                 }
             } catch (error) {
-                console.error('Numok tracker initialization error:', error);
+                console.error('Forlives Logistic tracker initialization error:', error);
             }
         }
 

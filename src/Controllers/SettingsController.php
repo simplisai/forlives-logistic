@@ -15,7 +15,7 @@ class SettingsController extends Controller {
         $settings = $this->getAllSettings();
         
         $this->view('settings/index', [
-            'title' => 'Settings - ' . ($settings['custom_app_name'] ?? 'Numok'),
+            'title' => 'Settings - ' . ($settings['custom_app_name'] ?? 'Forlives Logistic'),
             'settings' => $settings,
             'success' => $_SESSION['settings_success'] ?? null,
             'error' => $_SESSION['settings_error'] ?? null
@@ -34,7 +34,7 @@ class SettingsController extends Controller {
         try {
             Database::transaction(function() {
                 $settings = [
-                    'app_name' => $_POST['app_name'] ?? 'Numok',
+                    'app_name' => $_POST['app_name'] ?? 'Forlives Logistic',
                     'partner_welcome_message' => $_POST['partner_welcome_message'] ?? '',
                     'stripe_secret_key' => $_POST['stripe_secret_key'] ?? '',
                     'stripe_webhook_secret' => $_POST['stripe_webhook_secret'] ?? ''
@@ -332,7 +332,7 @@ class SettingsController extends Controller {
                 Database::query("DELETE FROM settings WHERE name IN ('custom_app_name', 'custom_logo')");
             });
 
-            $_SESSION['settings_success'] = 'Branding reset to Numok successfully.';
+            $_SESSION['settings_success'] = 'Branding reset to Forlives Logistic successfully.';
         } catch (\Exception $e) {
             $_SESSION['settings_error'] = 'Failed to reset branding. Please try again.';
         }

@@ -378,7 +378,7 @@ numok_sid3: tracking_data['sid3']
                                     </div>
                                 </li>
                                 <li>Verify the tracking data appears in your Stripe Dashboard under Payment details</li>
-                                <li>Check your Numok dashboard for the recorded conversion</li>
+                                <li>Check your Forlives Logistic dashboard for the recorded conversion</li>
                             </ol>
                         </div>
                     </div>

@@ -29,7 +29,7 @@ class PartnersController extends Controller
 
         $settings = $this->getSettings();
         $this->view('partners/index', [
-            'title' => 'Partners - ' . ($settings['custom_app_name'] ?? 'Numok'),
+            'title' => 'Partners - ' . ($settings['custom_app_name'] ?? 'Forlives Logistic'),
             'partners' => $partners
         ]);
     }
@@ -38,7 +38,7 @@ class PartnersController extends Controller
     {
         $settings = $this->getSettings();
         $this->view('partners/create', [
-            'title' => 'Create Partner - ' . ($settings['custom_app_name'] ?? 'Numok')
+            'title' => 'Create Partner - ' . ($settings['custom_app_name'] ?? 'Forlives Logistic')
         ]);
     }
 
@@ -133,7 +133,7 @@ class PartnersController extends Controller
 
         $settings = $this->getSettings();
         $this->view('partners/edit', [
-            'title' => 'Edit Partner - ' . ($settings['custom_app_name'] ?? 'Numok'),
+            'title' => 'Edit Partner - ' . ($settings['custom_app_name'] ?? 'Forlives Logistic'),
             'partner' => $partner,
             'programs' => $programs,
             'availablePrograms' => $availablePrograms

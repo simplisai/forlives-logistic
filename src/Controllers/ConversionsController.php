@@ -84,7 +84,7 @@ class ConversionsController extends Controller {
 
         $settings = $this->getSettings();
         $this->view('conversions/index', [
-            'title' => 'Conversions - ' . ($settings['custom_app_name'] ?? 'Numok'),
+            'title' => 'Conversions - ' . ($settings['custom_app_name'] ?? 'Forlives Logistic'),
             'conversions' => $conversions,
             'partners' => $partners,
             'programs' => $programs,

@@ -82,6 +82,7 @@ $routes = [
     // API routes
     'api/tracking/config/(\d+)' => ['TrackingController', 'config'],
     'api/tracking/click' => ['TrackingController', 'click'],
+    'api/programs/partner' => ['ApiProgramController', 'resolvePartner'],
     'api/programs' => ['ApiProgramController', 'createProgram'],
 
     // Webhook routes

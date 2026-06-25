@@ -111,6 +111,55 @@ class ApiProgramController extends Controller {
         }
     }
 
+    /**
+     * Resolve an affiliate tracking code to its partner (for showing
+     * "Partner: <name>" at Stripe checkout). GET ?tracking_code=...
+     */
+    public function resolvePartner(): void {
+        $this->handlePreflightRequest();
+
+        if (!$this->authorize()) {
+            http_response_code(401);
+            $this->json(['error' => 'Unauthorized']);
+            return;
+        }
+
+        $trackingCode = trim((string)($_GET['tracking_code'] ?? ''));
+        if ($trackingCode === '') {
+            http_response_code(422);
+            $this->json(['error' => 'tracking_code is required']);
+            return;
+        }
+
+        try {
+            $row = Database::query(
+                "SELECT pt.company_name, pt.contact_name, p.name AS program_name
+                 FROM partner_programs pp
+                 JOIN partners pt ON pp.partner_id = pt.id
+                 JOIN programs  p  ON pp.program_id = p.id
+                 WHERE pp.tracking_code = ? AND pp.status = 'active'
+                 LIMIT 1",
+                [$trackingCode]
+            )->fetch();
+
+            if (!$row) {
+                $this->json(['found' => false]);
+                return;
+            }
+
+            $this->json([
+                'found' => true,
+                'company_name' => $row['company_name'],
+                'contact_name' => $row['contact_name'],
+                'program_name' => $row['program_name'],
+            ]);
+        } catch (\Exception $e) {
+            error_log('ApiProgramController::resolvePartner failed: ' . $e->getMessage());
+            http_response_code(500);
+            $this->json(['error' => 'Lookup failed']);
+        }
+    }
+
     private function authorize(): bool {
         $expected = $this->apiToken();
         if ($expected === '') {

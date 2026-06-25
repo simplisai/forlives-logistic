@@ -24,7 +24,7 @@
                                 <?php if (!empty($settings['custom_logo'])): ?>
                                     <img src="/assets/uploads/<?= htmlspecialchars($settings['custom_logo']) ?>" alt="<?= htmlspecialchars($settings['custom_app_name'] ?? 'App') ?>" class="h-8 max-w-48 object-contain" />
                                 <?php else: ?>
-                                    <img src="/assets/images/numok-logo.png" alt="Forlives Logistic" class="h-8" />
+                                    <img src="/assets/images/forlives-logo.png" alt="Forlives Logistic" class="h-8" />
                                 <?php endif; ?>
                             </a>
                         </div>

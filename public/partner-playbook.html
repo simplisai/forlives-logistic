@@ -489,6 +489,39 @@
     setLang(saved || 'en');
   })();
 
+  // Host-based branding: the same static page serves both portals. On the
+  // Solar Grove host it swaps logo, favicon, links and brand/domain mentions.
+  (function(){
+    if(location.hostname.indexOf('solargrove')===-1) return;
+    var BRAND='Solar Grove', HOST='partners.solargrove.site';
+    function rebrandStr(s){
+      return s.replace(/9 FOR LIVES/g,BRAND)
+              .replace(/partners\.9forlives\.com/g,HOST)
+              .replace(/9forlives/g,'solargrove');
+    }
+    // Patch every translation string so language switches stay on-brand.
+    try{ Object.keys(I18N).forEach(function(lang){ var d=I18N[lang];
+      Object.keys(d).forEach(function(k){ if(typeof d[k]==='string') d[k]=rebrandStr(d[k]); });
+    }); }catch(e){}
+    // Re-apply current language so patched strings render now.
+    var cur='en'; try{ cur=localStorage.getItem('pb_lang')||'en'; }catch(e){}
+    setLang(cur);
+    // Logos + favicon + title.
+    document.querySelectorAll('img').forEach(function(img){
+      if(img.alt==='9 FOR LIVES' || /forlives-logo/.test(img.getAttribute('src')||'')){
+        img.src='/assets/images/solargrove-logo.svg'; img.alt=BRAND; img.style.display='';
+      }
+    });
+    var fav=document.querySelector('link[rel="icon"]'); if(fav) fav.href='/assets/images/solargrove-favicon.svg';
+    document.title=rebrandStr(document.title);
+    // Action links point at the Solar Grove portal.
+    document.querySelectorAll('a[href]').forEach(function(a){ a.href=rebrandStr(a.href); });
+    // Sweep remaining static text nodes (URL chips, footer) not driven by i18n.
+    var rx=/9 FOR LIVES|partners\.9forlives\.com|9forlives/;
+    var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,null), n;
+    while(n=w.nextNode()){ if(rx.test(n.nodeValue)) n.nodeValue=rebrandStr(n.nodeValue); }
+  })();
+
   function copyTrk(){
     var t=document.getElementById('trk').textContent.trim(), b=document.getElementById('cbtn'), orig=b.textContent;
     navigator.clipboard.writeText(t).then(function(){ b.textContent='✓'; b.classList.add('copied'); setTimeout(function(){ b.textContent=orig; b.classList.remove('copied'); },1600); }).catch(function(){ b.textContent='✓'; });

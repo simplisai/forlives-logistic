@@ -13,23 +13,27 @@ class PartnerProgramsController extends PartnerBaseController {
     public function index(): void {
         $partnerId = $_SESSION['partner_id'];
 
+        // Scope to the current host's brand program (no-op on the unscoped host).
+        $brand = $this->brandProgramFilter('p.id');
+
         // Get all active programs that are:
         // 1. Public (is_private = 0), OR
         // 2. Already assigned to this partner (joined)
         $programs = Database::query(
-            "SELECT p.*, 
-                    CASE 
+            "SELECT p.*,
+                    CASE
                         WHEN pp.id IS NOT NULL THEN 'joined'
                         ELSE 'available'
                     END as status,
                     pp.tracking_code
              FROM programs p
-             LEFT JOIN partner_programs pp ON p.id = pp.program_id 
+             LEFT JOIN partner_programs pp ON p.id = pp.program_id
                 AND pp.partner_id = ?
              WHERE p.status = 'active'
                AND (p.is_private = 0 OR pp.id IS NOT NULL)
+               {$brand['sql']}
              ORDER BY p.name",
-            [$partnerId]
+            array_merge([$partnerId], $brand['params'])
         )->fetchAll();
 
         $settings = $this->getSettings();
@@ -48,10 +52,13 @@ class PartnerProgramsController extends PartnerBaseController {
         $partnerId = $_SESSION['partner_id'];
         $programId = $_POST['program_id'] ?? 0;
 
-        // Validate program exists, is active, and is public (private programs can only be assigned by admin)
+        // Validate program exists, is active, and is public (private programs can only be assigned by admin).
+        // Also enforce the host's brand scope: on a branded portal a partner can
+        // only join that brand's program, even with a forged program_id.
+        $brand = $this->brandProgramFilter('id');
         $program = Database::query(
-            "SELECT id, terms FROM programs WHERE id = ? AND status = 'active' AND is_private = 0",
-            [$programId]
+            "SELECT id, terms FROM programs WHERE id = ? AND status = 'active' AND is_private = 0{$brand['sql']}",
+            array_merge([$programId], $brand['params'])
         )->fetch();
 
         if (!$program) {

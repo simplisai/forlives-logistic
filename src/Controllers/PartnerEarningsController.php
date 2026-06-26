@@ -81,7 +81,14 @@ class PartnerEarningsController extends PartnerBaseController {
             $whereConditions[] = "c.created_at >= DATE_SUB(NOW(), INTERVAL ? DAY)";
             $params[] = $period;
         }
-        
+
+        // Scope to the current host's brand program (no-op on the unscoped host)
+        $brand = $this->brandProgramCondition();
+        if ($brand['cond'] !== null) {
+            $whereConditions[] = $brand['cond'];
+            $params = array_merge($params, $brand['params']);
+        }
+
         $whereClause = implode(' AND ', $whereConditions);
         
         $summary = Database::query(
@@ -137,7 +144,14 @@ class PartnerEarningsController extends PartnerBaseController {
             $whereConditions[] = "c.created_at >= DATE_SUB(NOW(), INTERVAL ? DAY)";
             $params[] = $period;
         }
-        
+
+        // Scope to the current host's brand program (no-op on the unscoped host)
+        $brand = $this->brandProgramCondition();
+        if ($brand['cond'] !== null) {
+            $whereConditions[] = $brand['cond'];
+            $params = array_merge($params, $brand['params']);
+        }
+
         $whereClause = implode(' AND ', $whereConditions);
         $params[] = $limit;
         $params[] = $offset;
@@ -176,7 +190,14 @@ class PartnerEarningsController extends PartnerBaseController {
             $whereConditions[] = "c.created_at >= DATE_SUB(NOW(), INTERVAL ? DAY)";
             $params[] = $period;
         }
-        
+
+        // Scope to the current host's brand program (no-op on the unscoped host)
+        $brand = $this->brandProgramCondition();
+        if ($brand['cond'] !== null) {
+            $whereConditions[] = $brand['cond'];
+            $params = array_merge($params, $brand['params']);
+        }
+
         $whereClause = implode(' AND ', $whereConditions);
         
         $result = Database::query(
@@ -191,31 +212,33 @@ class PartnerEarningsController extends PartnerBaseController {
     }
 
     private function getPartnerPrograms(int $partnerId): array {
+        $brand = $this->brandProgramFilter('p.id');
         return Database::query(
             "SELECT p.id, p.name
              FROM programs p
              JOIN partner_programs pp ON p.id = pp.program_id
-             WHERE pp.partner_id = ? AND pp.status = 'active'
+             WHERE pp.partner_id = ? AND pp.status = 'active'{$brand['sql']}
              ORDER BY p.name",
-            [$partnerId]
+            array_merge([$partnerId], $brand['params'])
         )->fetchAll();
     }
 
     private function getMonthlyEarnings(int $partnerId, string $period): array {
         $months = $period === 'all' ? 12 : min(12, ceil($period / 30));
-        
+        $brand = $this->brandProgramFilter();
+
         return Database::query(
-            "SELECT 
+            "SELECT
                 DATE_FORMAT(c.created_at, '%Y-%m') as month,
                 COALESCE(SUM(c.commission_amount), 0) as earnings,
                 COUNT(c.id) as conversions
              FROM conversions c
              JOIN partner_programs pp ON c.partner_program_id = pp.id
-             WHERE pp.partner_id = ? 
+             WHERE pp.partner_id = ?{$brand['sql']}
              AND c.created_at >= DATE_SUB(CURRENT_DATE(), INTERVAL ? MONTH)
              GROUP BY DATE_FORMAT(c.created_at, '%Y-%m')
              ORDER BY month ASC",
-            [$partnerId, $months]
+            array_merge([$partnerId], $brand['params'], [$months])
         )->fetchAll();
     }
 } 

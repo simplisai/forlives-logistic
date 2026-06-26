@@ -1,11 +1,7 @@
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            <?php if (!empty($settings['custom_logo'])): ?>
-                <img src="/assets/uploads/<?= htmlspecialchars($settings['custom_logo']) ?>" onerror="this.onerror=null;this.src='/assets/images/forlives-logo.svg'" alt="<?= htmlspecialchars($settings['custom_app_name'] ?? 'App') ?>" class="h-12 mx-auto max-w-64 object-contain">
-            <?php else: ?>
-                <img src="/assets/images/forlives-logo.svg" class="h-12 mx-auto max-w-xs object-contain">
-            <?php endif; ?>
+            <img src="<?= htmlspecialchars($settings['brand_logo'] ?? '/assets/images/forlives-logo.svg') ?>" onerror="this.onerror=null;this.src='/assets/images/forlives-logo.svg'" alt="<?= htmlspecialchars($settings['custom_app_name'] ?? 'Forlives Logistic') ?>" class="h-12 mx-auto max-w-64 object-contain">
         </h2>
     </div>
 

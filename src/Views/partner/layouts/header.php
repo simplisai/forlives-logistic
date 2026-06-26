@@ -10,8 +10,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/alpinejs" defer></script>
 
-    <link rel="icon" type="image/png" href="/assets/images/favicon.png">
-    <link rel="apple-touch-icon" href="/assets/images/favicon.png">
+    <link rel="icon" type="<?= htmlspecialchars($settings['brand_favicon_type'] ?? 'image/png') ?>" href="<?= htmlspecialchars($settings['brand_favicon'] ?? '/assets/images/favicon.png') ?>">
+    <link rel="apple-touch-icon" href="<?= htmlspecialchars($settings['brand_favicon'] ?? '/assets/images/favicon.png') ?>">
     <link rel="manifest" href="/assets/favicon/site.webmanifest">
 </head>
 <body class="h-full">
@@ -23,11 +23,7 @@
                     <div class="flex">
                         <div class="flex flex-shrink-0 items-center">
                             <a href="/dashboard">
-                                <?php if (!empty($settings['custom_logo'])): ?>
-                                    <img src="/assets/uploads/<?= htmlspecialchars($settings['custom_logo']) ?>" onerror="this.onerror=null;this.src='/assets/images/forlives-logo.svg'" alt="<?= htmlspecialchars($settings['custom_app_name'] ?? 'App') ?>" class="h-8 max-w-48 object-contain" />
-                                <?php else: ?>
-                                    <img src="/assets/images/forlives-logo.svg" alt="Forlives Logistic" class="h-8" />
-                                <?php endif; ?>
+                                <img src="<?= htmlspecialchars($settings['brand_logo'] ?? '/assets/images/forlives-logo.svg') ?>" onerror="this.onerror=null;this.src='/assets/images/forlives-logo.svg'" alt="<?= htmlspecialchars($settings['custom_app_name'] ?? 'Forlives Logistic') ?>" class="h-8 max-w-48 object-contain" />
                             </a>
                         </div>
                         <div class="hidden sm:ml-6 sm:flex sm:space-x-8">

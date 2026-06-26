@@ -48,61 +48,66 @@ class PartnerDashboardController extends PartnerBaseController {
     }
 
     private function getStats(int $partnerId): array {
+        // Scope every figure to the current host's brand program (no-op on the unscoped host).
+        $brand = $this->brandProgramFilter();
+        $bsql = $brand['sql'];
+        $bp = $brand['params'];
+
         // Get total conversions and revenue
         $stats = Database::query(
-            "SELECT 
+            "SELECT
                 COUNT(c.id) as total_conversions,
                 COALESCE(SUM(c.amount), 0) as total_revenue,
                 COALESCE(SUM(c.commission_amount), 0) as total_commission
              FROM conversions c
              JOIN partner_programs pp ON c.partner_program_id = pp.id
-             WHERE pp.partner_id = ?",
-            [$partnerId]
+             WHERE pp.partner_id = ?{$bsql}",
+            array_merge([$partnerId], $bp)
         )->fetch();
 
         // Get this month's conversions
         $monthlyStats = Database::query(
-            "SELECT 
+            "SELECT
                 COUNT(c.id) as conversions,
                 COALESCE(SUM(c.amount), 0) as revenue,
                 COALESCE(SUM(c.commission_amount), 0) as commission
              FROM conversions c
              JOIN partner_programs pp ON c.partner_program_id = pp.id
-             WHERE pp.partner_id = ?
+             WHERE pp.partner_id = ?{$bsql}
              AND MONTH(c.created_at) = MONTH(CURRENT_DATE())
              AND YEAR(c.created_at) = YEAR(CURRENT_DATE())",
-            [$partnerId]
+            array_merge([$partnerId], $bp)
         )->fetch();
-        
+
         // Get last month's stats for comparison
         $lastMonthStats = Database::query(
-            "SELECT 
+            "SELECT
                 COUNT(c.id) as conversions,
                 COALESCE(SUM(c.amount), 0) as revenue,
                 COALESCE(SUM(c.commission_amount), 0) as commission
              FROM conversions c
              JOIN partner_programs pp ON c.partner_program_id = pp.id
-             WHERE pp.partner_id = ?
+             WHERE pp.partner_id = ?{$bsql}
              AND MONTH(c.created_at) = MONTH(CURRENT_DATE() - INTERVAL 1 MONTH)
              AND YEAR(c.created_at) = YEAR(CURRENT_DATE() - INTERVAL 1 MONTH)",
-            [$partnerId]
+            array_merge([$partnerId], $bp)
         )->fetch();
 
         // Get active programs count
         $programs = Database::query(
-            "SELECT COUNT(*) as count 
-             FROM partner_programs 
-             WHERE partner_id = ? AND status = 'active'",
-            [$partnerId]
+            "SELECT COUNT(*) as count
+             FROM partner_programs pp
+             WHERE pp.partner_id = ? AND pp.status = 'active'{$bsql}",
+            array_merge([$partnerId], $bp)
         )->fetch();
-        
+
         // Get pending commission
         $pendingCommission = Database::query(
             "SELECT COALESCE(SUM(c.commission_amount), 0) as total
              FROM conversions c
              JOIN partner_programs pp ON c.partner_program_id = pp.id
-             WHERE pp.partner_id = ? AND c.status IN ('pending', 'payable')",
-            [$partnerId]
+             WHERE pp.partner_id = ? AND c.status IN ('pending', 'payable'){$bsql}",
+            array_merge([$partnerId], $bp)
         )->fetch();
         
         // Calculate trends
@@ -131,19 +136,21 @@ class PartnerDashboardController extends PartnerBaseController {
     }
 
     private function getRecentConversions(int $partnerId): array {
+        $brand = $this->brandProgramFilter();
         return Database::query(
             "SELECT c.*, p.name as program_name, pp.tracking_code
              FROM conversions c
              JOIN partner_programs pp ON c.partner_program_id = pp.id
              JOIN programs p ON pp.program_id = p.id
-             WHERE pp.partner_id = ?
+             WHERE pp.partner_id = ?{$brand['sql']}
              ORDER BY c.created_at DESC
              LIMIT 5",
-            [$partnerId]
+            array_merge([$partnerId], $brand['params'])
         )->fetchAll();
     }
 
     private function getActivePrograms(int $partnerId): array {
+        $brand = $this->brandProgramFilter();
         return Database::query(
             "SELECT pp.*, p.name as program_name, p.description,
                     p.commission_type, p.commission_value,
@@ -153,32 +160,34 @@ class PartnerDashboardController extends PartnerBaseController {
              FROM partner_programs pp
              JOIN programs p ON pp.program_id = p.id
              LEFT JOIN conversions c ON c.partner_program_id = pp.id
-             WHERE pp.partner_id = ? AND pp.status = 'active'
+             WHERE pp.partner_id = ? AND pp.status = 'active'{$brand['sql']}
              GROUP BY pp.id
              ORDER BY total_revenue DESC",
-            [$partnerId]
+            array_merge([$partnerId], $brand['params'])
         )->fetchAll();
     }
-    
+
     private function getEarningsTrends(int $partnerId): array {
+        $brand = $this->brandProgramFilter();
         return Database::query(
-            "SELECT 
+            "SELECT
                 DATE_FORMAT(c.created_at, '%Y-%m') as month,
                 COALESCE(SUM(c.commission_amount), 0) as earnings,
                 COUNT(c.id) as conversions
              FROM conversions c
              JOIN partner_programs pp ON c.partner_program_id = pp.id
-             WHERE pp.partner_id = ? 
+             WHERE pp.partner_id = ?{$brand['sql']}
              AND c.created_at >= DATE_SUB(CURRENT_DATE(), INTERVAL 6 MONTH)
              GROUP BY DATE_FORMAT(c.created_at, '%Y-%m')
              ORDER BY month ASC",
-            [$partnerId]
+            array_merge([$partnerId], $brand['params'])
         )->fetchAll();
     }
-    
+
     private function getProgramPerformance(int $partnerId): array {
+        $brand = $this->brandProgramFilter();
         return Database::query(
-            "SELECT 
+            "SELECT
                 p.name as program_name,
                 p.id as program_id,
                 COUNT(c.id) as total_conversions,
@@ -188,38 +197,39 @@ class PartnerDashboardController extends PartnerBaseController {
              FROM partner_programs pp
              JOIN programs p ON pp.program_id = p.id
              LEFT JOIN conversions c ON c.partner_program_id = pp.id
-             WHERE pp.partner_id = ? AND pp.status = 'active'
+             WHERE pp.partner_id = ? AND pp.status = 'active'{$brand['sql']}
              GROUP BY p.id, p.name
              ORDER BY total_commission DESC
              LIMIT 5",
-            [$partnerId]
+            array_merge([$partnerId], $brand['params'])
         )->fetchAll();
     }
     
     private function getRecentActivities(int $partnerId): array {
         $activities = [];
-        
+        $brand = $this->brandProgramFilter();
+
         // Recent conversions
         $recentConversions = Database::query(
             "SELECT c.amount, c.commission_amount, c.created_at, p.name as program_name, 'conversion' as type
              FROM conversions c
              JOIN partner_programs pp ON c.partner_program_id = pp.id
              JOIN programs p ON pp.program_id = p.id
-             WHERE pp.partner_id = ? AND c.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+             WHERE pp.partner_id = ?{$brand['sql']} AND c.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
              ORDER BY c.created_at DESC
              LIMIT 5",
-            [$partnerId]
+            array_merge([$partnerId], $brand['params'])
         )->fetchAll();
-        
+
         // Recent program joins
         $recentJoins = Database::query(
             "SELECT pp.created_at, p.name as program_name, 'program_join' as type
              FROM partner_programs pp
              JOIN programs p ON pp.program_id = p.id
-             WHERE pp.partner_id = ? AND pp.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+             WHERE pp.partner_id = ?{$brand['sql']} AND pp.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
              ORDER BY pp.created_at DESC
              LIMIT 3",
-            [$partnerId]
+            array_merge([$partnerId], $brand['params'])
         )->fetchAll();
         
         // Merge and sort activities
@@ -232,16 +242,17 @@ class PartnerDashboardController extends PartnerBaseController {
     }
     
     private function getPendingPayouts(int $partnerId): array {
+        $brand = $this->brandProgramFilter();
         return Database::query(
-            "SELECT 
+            "SELECT
                 c.status,
                 COUNT(c.id) as count,
                 COALESCE(SUM(c.commission_amount), 0) as total_amount
              FROM conversions c
              JOIN partner_programs pp ON c.partner_program_id = pp.id
-             WHERE pp.partner_id = ? AND c.status IN ('pending', 'payable')
+             WHERE pp.partner_id = ? AND c.status IN ('pending', 'payable'){$brand['sql']}
              GROUP BY c.status",
-            [$partnerId]
+            array_merge([$partnerId], $brand['params'])
         )->fetchAll();
     }
 }

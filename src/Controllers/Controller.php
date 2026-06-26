@@ -3,6 +3,7 @@
 namespace Numok\Controllers;
 
 use Numok\Database\Database;
+use Numok\Support\Brand;
 
 class Controller {
     
@@ -39,15 +40,29 @@ class Controller {
                 $settings[$row['name']] = $row['value'];
             }
 
-            // Brand logo is managed in-repo (public/assets/images/forlives-logo.svg)
-            // as the single source of truth: always present, identical on every screen,
-            // and survives redeploys. Ignore any uploaded custom_logo (ephemeral here).
+            // Branding is resolved per-host (single deployment, multiple branded
+            // portals). The in-repo brand assets are the single source of truth:
+            // always present, identical on every screen, and survive redeploys.
+            // Ignore any uploaded custom_logo (ephemeral here).
             unset($settings['custom_logo']);
+
+            $brand = Brand::current();
+            $settings['custom_app_name']    = $brand['name'];
+            $settings['brand_logo']         = $brand['logo'];
+            $settings['brand_favicon']      = $brand['favicon'];
+            $settings['brand_favicon_type'] = $brand['favicon_type'];
 
             return $settings;
         } catch (\Exception $e) {
-            // Return empty array if database is not available
-            return [];
+            // Database unavailable: still resolve branding from the host so
+            // login/error pages render with the correct brand.
+            $brand = Brand::current();
+            return [
+                'custom_app_name'    => $brand['name'],
+                'brand_logo'         => $brand['logo'],
+                'brand_favicon'      => $brand['favicon'],
+                'brand_favicon_type' => $brand['favicon_type'],
+            ];
         }
     }
 
